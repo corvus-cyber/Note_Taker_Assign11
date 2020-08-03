@@ -1,6 +1,7 @@
 // Dependencies
 // =============================================================
 var express = require("express");
+var path = require("path");
 
 var app = express();
 var PORT = 8080;
@@ -12,14 +13,14 @@ app.use(express.json());
 //Routes
 // =============================================================
 app.get("/", function(req, res) {
-    res.sendFile(path.join(__dirname, "/public/index.html"));
+    res.sendFile(path.join(__dirname, "./index.html"));
   });
 
 app.get("/notes", function(req, res) {
-    res.sendFile(path.join(__dirname, "/public/notes.html"));
+    res.sendFile(path.join(__dirname, "./notes.html"));
   });
 
 
 app.listen(PORT, function() {
-console.log("App listening on PORT " + PORT);
+    console.log("App listening on PORT " + PORT);
 });
