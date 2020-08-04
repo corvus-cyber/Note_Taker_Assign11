@@ -17,6 +17,7 @@ const getNotes = () => {
 
 // A function for saving a note to the db
 const saveNote = (note) => {
+  console.log("save bttn works")
   return $.ajax({
     url: "/api/notes",
     data: note,
@@ -26,6 +27,7 @@ const saveNote = (note) => {
 
 // A function for deleting a note from the db
 const deleteNote = (id) => {
+  console.log("delete bttn works")
   return $.ajax({
     url: "api/notes/" + id,
     method: "DELETE",
