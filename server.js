@@ -31,7 +31,7 @@ fs.readFile(jsonRoute, "utf8", function(error, data) {
   });
 });
 
-
+//=============================================================
 //Routes for HTML
 app.get('/notes', (req, res) => {
     res.sendFile(path.join(__dirname, "./notes.html"));
@@ -47,6 +47,7 @@ app.get('*', (req, res) => {
 
 
 //==============================================================
+//This will listen to the server
 app.listen(PORT, () => {
     console.log("App listening on PORT " + PORT);
 });
