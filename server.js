@@ -26,6 +26,8 @@ app.get('*', (req, res) => {
 app.get('/assets/db/db.json', (req, res) => {
   console.log(res);
 })
+/////Addition for what will need to be changed///////////
+
 app.get("/api/tables:table", function(req, res) {
   var selected = req.params.table;
 
@@ -68,6 +70,7 @@ app.post("/api/tables", function(req, res) {
   }
 });
 
+//////////////////////////////////////////////////////////////
 app.listen(PORT, () => {
     console.log("App listening on PORT " + PORT);
 });
