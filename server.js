@@ -19,7 +19,7 @@ let notesArray = [];
 
 //Used fs to read the file and place app.get within to port the notes into notes.html
 app.get("/api/notes", (req, res) => {
-  notesArray= fs.readFile(jsonRoute, "utf8", function(error, data) {
+  fs.readFile(jsonRoute, "utf8", function(error, data) {
     if (error) {
       throw error;
     }
@@ -27,24 +27,30 @@ app.get("/api/notes", (req, res) => {
     console.log(data);
     console.log("------------");
     
-    parsedArray = JSON.parse(notesArray);
+    parsedArray = JSON.parse(data);
     console.log(parsedArray);
     res.json(parsedArray);
   });
 });
 
-app.push("/api/notes", (req, res) => {
-  notesArray= fs.readFile(jsonRoute, "utf8", (error, data) =>{
-    if (error){
-      throw error;
-    }
-    console.log(notesArray)
+// app.post("/api/notes", (req, res) => {
+//   fs.readFile(jsonRoute, "utf8", (error, data) =>{
+//     if (error){
+//       throw error;
+//     }
+    
+//     console.log("------------");
+//     console.log(data);
+//     console.log("------------");
 
-    fs.writeFile(jsonRoute, notesArray, "utf8",() =>{
-      res.json(dataArray);
-    })
-  })  
-})
+//     parsedArray = JSON.parse(data);
+//     console.log(parsedArray);
+
+//     fs.writeFile(jsonRoute, parsedArray, "utf8",() =>{
+//       res.json(parsedArray);
+//     })
+//   })  
+// })
 
 
 //=============================================================
