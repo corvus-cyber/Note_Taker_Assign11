@@ -4,6 +4,11 @@ var express = require("express");
 var path = require("path");
 var fs= require('fs')
 var app = express();
+const util = require("util");
+
+const readFileAsync = util.promisify(fs.readFile);
+const writeFileAsync = util.promisify(fs.writeFile);
+
 const PORT = process.env.PORT || 8080;
 
 // Sets up the Express app to handle data parsing
@@ -21,32 +26,24 @@ app.get("/api/notes", (req, res) => {
   res.json(returnData());
 });
 
-function returnData(){
-  fs.readFile(jsonRoute, "utf8", function(error, data) {
-    if (error) {
-      throw error;
-    }
-    console.log("------------");
-    console.log(data);
-    console.log("------------");
+async function returnData(){
+  const notes = await readFileAsync(jsonRoute, "utf8")
     
-    let parsedArray = JSON.parse(data);
+    let parsedArray = JSON.parse(notes);
     return(parsedArray);
-  });
 };
 
-app.post("/api/notes", (req, res) => {
+app.post("/api/notes", async (req, res) => {  
+  let notes = await returnData();
 
   console.log(req.body);
-  stringedArray = JSON.stringify(req.body);
+  notes.push(req.body);
+  stringedArray = JSON.stringify(notes);
 
-  fs.writeFileSync('./db/db.json', stringedArray, (err) => {
-    if (err) {
-      throw err};
-    console.log('The file has been saved!');
-  }); 
-  res.json(req.body);
+  const post = await writeFileAsync(jsonRoute, stringedArray, "utf8"); 
+  res.json(stringedArray);
 });
+//app.delete
 
 
 //=============================================================
