@@ -18,8 +18,8 @@ const jsonRoute = path.join(__dirname, './db/db.json');
 let notesArray = [];
 
 //Used fs to read the file and place app.get within to port the notes into notes.html
-app.get("/api/notes", function(req, res) {
-  notesArray=fs.readFile(jsonRoute, "utf8", function(error, data) {
+app.get("/api/notes", (req, res) => {
+  notesArray= fs.readFile(jsonRoute, "utf8", function(error, data) {
     if (error) {
       throw error;
     }
@@ -33,17 +33,26 @@ app.get("/api/notes", function(req, res) {
   });
 });
 
+app.push("/api/notes", (req, res) => {
+  notesArray= fs.readFile(jsonRoute, "utf8", (error, data) =>{
+    if (error){
+      throw error;
+    }
+    console.log(notesArray)
+
+    fs.writeFile(jsonRoute, notesArray, "utf8",() =>{
+      res.json(dataArray);
+    })
+  })  
+})
 
 
 //=============================================================
-//Routes for JS
+//Route for JS
 app.get('/assets/js/index.js', (req, res) => {
   res.sendFile(path.join(__dirname, "./assets/js/index.js"))
 });
 
-app.get('/assets/js/notepush.js', (req, res) =>{
-  res.sendFile(path.join(__dirname, "./assets/js/notepush.js"))
-});
 
 
 //Route for CSS 
