@@ -45,9 +45,10 @@ app.post("/api/notes", (req, res) => {
 
     parsedArray = JSON.parse(data);
     console.log(parsedArray);
+    stringedArray = JSON.stringify(parsedArray);
 
-    fs.writeFile(jsonRoute, parsedArray, "utf8",() =>{
-      res.json(parsedArray);
+    fs.writeFile(jsonRoute, stringedArray, "utf8",() =>{
+      res.json(stringedArray);
     })
   })  
 })
