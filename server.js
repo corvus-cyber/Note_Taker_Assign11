@@ -46,7 +46,7 @@ app.post("/api/notes", (req, res) => {
     console.log(parsedArray);
     stringedArray = JSON.stringify(parsedArray);
 
-    fs.writeFileSync('/db/db.json', stringedArray, (err) => {
+    fs.appendFileSync('/db/db.json', stringedArray, (err) => {
       if (err) {
         throw err};
       console.log('The file has been saved!');
