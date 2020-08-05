@@ -15,21 +15,25 @@ app.use(express.json());
 //Route for JSON
 //used a function to build the route that the JSON will follow
 const jsonRoute = path.join(__dirname, './db/db.json');
+let notesArray = [];
 
 //Used fs to read the file and place app.get within to port the notes into notes.html
-fs.readFile(jsonRoute, "utf8", function(error, data) {
-  if (error) {
-    throw error;
-  }
-  console.log("------------")
-  console.log(data);
-  console.log("------------")
- 
-
-  app.get("/api/notes", function(req, res) {
-    res.json(JSON.parse(data));
+app.get("/api/notes", function(req, res) {
+  notesArray=fs.readFile(jsonRoute, "utf8", function(error, data) {
+    if (error) {
+      throw error;
+    }
+    console.log("------------");
+    console.log(data);
+    console.log("------------");
+    
+    parsedArray = JSON.parse(notesArray);
+    console.log(parsedArray);
+    res.json(parsedArray);
   });
 });
+
+
 
 //=============================================================
 //Routes for JS
