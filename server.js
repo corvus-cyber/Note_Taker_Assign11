@@ -32,6 +32,15 @@ fs.readFile(jsonRoute, "utf8", function(error, data) {
 });
 
 //=============================================================
+//Routes for JS
+app.get('/assets/js/index.js', (req, res) => {
+  res.sendFile(path.join(__dirname, "./assets/js/index.js"))
+});
+
+app.get('/assets/js/notepush.js', (req, res) =>{
+  res.sendFile(path.join(__dirname, "./assets/js/notepush.js"))
+})
+
 //Routes for HTML
 app.get('/notes', (req, res) => {
     res.sendFile(path.join(__dirname, "./notes.html"));
@@ -42,6 +51,7 @@ app.get('/notes', (req, res) => {
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, "./index.html"));
 });
+
 
 
 
