@@ -4,7 +4,7 @@ var express = require("express");
 var path = require("path");
 var fs= require('fs')
 var app = express();
-var PORT = 8080;
+const PORT = process.env.PORT || 8080;
 
 // Sets up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
@@ -39,7 +39,13 @@ app.get('/assets/js/index.js', (req, res) => {
 
 app.get('/assets/js/notepush.js', (req, res) =>{
   res.sendFile(path.join(__dirname, "./assets/js/notepush.js"))
-})
+});
+
+
+//Route for CSS 
+app.get('/assets/css/styles.css', (req, res) => {
+  res.sendFile(path.join(__dirname, "./assets/css/styles.css"))
+});
 
 //Routes for HTML
 app.get('/notes', (req, res) => {
