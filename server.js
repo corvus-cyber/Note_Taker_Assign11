@@ -15,7 +15,6 @@ app.use(express.json());
 //Route for JSON
 //used a function to build the route that the JSON will follow
 const jsonRoute = path.join(__dirname, './db/db.json');
-let notesArray = [];
 
 //Used fs to read the file and place app.get within to port the notes into notes.html
 app.get("/api/notes", (req, res) => {
@@ -34,7 +33,7 @@ app.get("/api/notes", (req, res) => {
 });
 
 app.post("/api/notes", (req, res) => {
-  fs.readFile(jsonRoute, "utf8", (error, data) =>{
+  fs.readFileSync(jsonRoute, "utf8", (error, data) =>{
     if (error){
       throw error;
     }
@@ -47,10 +46,13 @@ app.post("/api/notes", (req, res) => {
     console.log(parsedArray);
     stringedArray = JSON.stringify(parsedArray);
 
-    fs.writeFile(jsonRoute, stringedArray, "utf8",() =>{
-      res.json(stringedArray);
-    })
-  })  
+    fs.writeFileSync('/db/db.json', stringedArray, (err) => {
+      if (err) {
+        throw err};
+      console.log('The file has been saved!');
+    });
+  }); 
+  res.json(data);
 })
 
 
