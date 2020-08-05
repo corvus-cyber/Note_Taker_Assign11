@@ -18,6 +18,10 @@ const jsonRoute = path.join(__dirname, './db/db.json');
 
 //Used fs to read the file and place app.get within to port the notes into notes.html
 app.get("/api/notes", (req, res) => {
+  res.json(returnData());
+});
+
+function returnData(){
   fs.readFile(jsonRoute, "utf8", function(error, data) {
     if (error) {
       throw error;
@@ -26,34 +30,23 @@ app.get("/api/notes", (req, res) => {
     console.log(data);
     console.log("------------");
     
-    parsedArray = JSON.parse(data);
-    console.log(parsedArray);
-    res.json(parsedArray);
+    let parsedArray = JSON.parse(data);
+    return(parsedArray);
   });
-});
+};
 
 app.post("/api/notes", (req, res) => {
-  fs.readFileSync(jsonRoute, "utf8", (error, data) =>{
-    if (error){
-      throw error;
-    }
-    
-    console.log("------------");
-    console.log(data);
-    console.log("------------");
 
-    parsedArray = JSON.parse(data);
-    console.log(parsedArray);
-    stringedArray = JSON.stringify(parsedArray);
+  console.log(req.body);
+  stringedArray = JSON.stringify(req.body);
 
-    fs.appendFileSync('/db/db.json', stringedArray, (err) => {
-      if (err) {
-        throw err};
-      console.log('The file has been saved!');
-    });
+  fs.writeFileSync('./db/db.json', stringedArray, (err) => {
+    if (err) {
+      throw err};
+    console.log('The file has been saved!');
   }); 
-  res.json(data);
-})
+  res.json(req.body);
+});
 
 
 //=============================================================
