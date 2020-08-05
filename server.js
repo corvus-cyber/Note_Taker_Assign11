@@ -33,24 +33,24 @@ app.get("/api/notes", (req, res) => {
   });
 });
 
-// app.post("/api/notes", (req, res) => {
-//   fs.readFile(jsonRoute, "utf8", (error, data) =>{
-//     if (error){
-//       throw error;
-//     }
+app.post("/api/notes", (req, res) => {
+  fs.readFile(jsonRoute, "utf8", (error, data) =>{
+    if (error){
+      throw error;
+    }
     
-//     console.log("------------");
-//     console.log(data);
-//     console.log("------------");
+    console.log("------------");
+    console.log(data);
+    console.log("------------");
 
-//     parsedArray = JSON.parse(data);
-//     console.log(parsedArray);
+    parsedArray = JSON.parse(data);
+    console.log(parsedArray);
 
-//     fs.writeFile(jsonRoute, parsedArray, "utf8",() =>{
-//       res.json(parsedArray);
-//     })
-//   })  
-// })
+    fs.writeFile(jsonRoute, parsedArray, "utf8",() =>{
+      res.json(parsedArray);
+    })
+  })  
+})
 
 
 //=============================================================
