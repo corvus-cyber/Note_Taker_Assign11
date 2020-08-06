@@ -59,8 +59,8 @@ app.delete("/api/notes/:id", (req, res) => {
       return console.log(error);
     };
     let parsedData = JSON.parse(data);
-    parsedData = parsedData.filter(notes => notes.id !== id);
-    let stringedID=JSON.stringify(idBody);
+    parsedData = parsedData.filter(notes => notes.uniqueID !== uniqueID);
+    let stringedID=JSON.stringify(parsedData);
     fs.writeFileSync(jsonRoute, stringedID, (error) => {
       if (error){
         return console.log(error);
