@@ -1,11 +1,10 @@
 // Dependencies
 // =============================================================
 const express = require("express");
-const path = require("path");
-const fs= require('fs')
-
-
 const app = express();
+const path = require("path");
+const api = require("./routes/api/apiRoutes");
+const html = require("./routes/html/htmlRoutes");
 
 
 
@@ -15,98 +14,17 @@ const PORT = process.env.PORT || 8080;
 // Sets up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
+app.use(express.static("public"))
 //Routes
 // =============================================================
-//Route for JSON
-//used a variableto build the route that the JSON will follow
-const jsonRoute = path.join(__dirname, './db/db.json');
 
-//Used fs to read the file and place app.get within to port the notes into notes.html
-app.get("/api/notes", (req, res) => {
-  fs.readFile(jsonRoute, "utf8", (error,data) =>{
-    if (error){
-      return console.log(error);
-    }
-    const parsedData = JSON.parse(data);
-    res.json(parsedData);
-  });
+app.use("/api", api);
+
+app.use("/", html);
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "./public/index.html"));
 });
-
-app.post("/api/notes", (req, res) =>{
-  fs.readFile(jsonRoute, "utf8", (error,data) =>{
-    if (error){
-      return console.log(error);
-    }
-    let parsedData = JSON.parse(data);
-    if (parsedData.length > 0){
-      var newID = parsedData[parsedData.length-1].id +1;
-    }
-    else {
-      newID=1
-    };
-    
-    let newNote ={
-      id: newID,
-      title: req.body.title,
-      text: req.body.text
-    }
-    parsedData.push(newNote);
-    let stringedData = JSON.stringify(parsedData)
-    fs.writeFileSync(jsonRoute, stringedData, (error) => {
-      if (error){
-        return console.log(error);
-      } 
-      res.json(stringedData);
-    }); 
-  });  
-})
-
-app.delete("/api/notes/:id", (req, res) => {
-  const uniqueID = parseInt(req.params.id);
-  console.log(uniqueID);
-  fs.readFile(jsonRoute, "utf8", (error,data) =>{
-    if (error){
-      return console.log(error);
-    };
-    let parsedData = JSON.parse(data);
-    parsedData = parsedData.filter(notes => notes.id !== uniqueID);
-    let stringedID=JSON.stringify(parsedData);
-    fs.writeFileSync(jsonRoute, stringedID, (error) => {
-      if (error){
-        return console.log(error);
-      }
-      res.json(stringedID);
-    })
-  });
-})
-//=============================================================
-//Route for JS
-app.get('/assets/js/index.js', (req, res) => {
-  res.sendFile(path.join(__dirname, "./assets/js/index.js"))
-});
-
-
-
-//Route for CSS 
-app.get('/assets/css/styles.css', (req, res) => {
-  res.sendFile(path.join(__dirname, "./assets/css/styles.css"))
-});
-
-//Routes for HTML
-app.get('/notes', (req, res) => {
-    res.sendFile(path.join(__dirname, "./notes.html"));
-});
-
-//The app.get for index is placed at the end because * is a wildcard, so it matches and stops the other GET routes from being run.
-//If you place it first, the others do not work because it matches everything. If it’s last, it’ll only run if no other route matches.
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, "./index.html"));
-});
-
-
-
-
 
 //==============================================================
 //This will listen to the server
