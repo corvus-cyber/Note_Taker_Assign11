@@ -39,9 +39,14 @@ app.post("/api/notes", (req, res) =>{
       return console.log(error);
     }
     let parsedData = JSON.parse(data);
-    parsedData.push(req.body);
+    var newID = parsedData[parsedData.length - 1].id +1;
+    let newNote ={
+      id: newID,
+      title: req.body.title,
+      text: req.body.text
+    }
+    parsedData.push(newNote);
     let stringedData = JSON.stringify(parsedData)
-    
     fs.writeFileSync(jsonRoute, stringedData, (error) => {
       if (error){
         return console.log(error);
