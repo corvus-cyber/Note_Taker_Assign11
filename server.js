@@ -57,14 +57,14 @@ app.post("/api/notes", (req, res) =>{
 })
 
 app.delete("/api/notes/:id", (req, res) => {
-  const uniqueID = req.params.id;
+  const uniqueID = parseInt(req.params.id);
   console.log(uniqueID);
   fs.readFile(jsonRoute, "utf8", (error,data) =>{
     if (error){
       return console.log(error);
     };
     let parsedData = JSON.parse(data);
-    parsedData = parsedData.filter(notes => notes.uniqueID !== uniqueID);
+    parsedData = parsedData.filter(notes => notes.id !== uniqueID);
     let stringedID=JSON.stringify(parsedData);
     fs.writeFileSync(jsonRoute, stringedID, (error) => {
       if (error){
