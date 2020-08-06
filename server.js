@@ -1,13 +1,14 @@
 // Dependencies
 // =============================================================
-var express = require("express");
-var path = require("path");
-var fs= require('fs')
-var app = express();
-const util = require("util");
+const express = require("express");
+const path = require("path");
+const fs= require('fs')
 
-const readFileAsync = util.promisify(fs.readFile);
-const writeFileAsync = util.promisify(fs.writeFile);
+
+const app = express();
+
+
+
 
 const PORT = process.env.PORT || 8080;
 
@@ -18,33 +19,37 @@ app.use(express.json());
 //Routes
 // =============================================================
 //Route for JSON
-//used a function to build the route that the JSON will follow
+//used a variable to build the route that the JSON will follow
 const jsonRoute = path.join(__dirname, './db/db.json');
 
 //Used fs to read the file and place app.get within to port the notes into notes.html
 app.get("/api/notes", (req, res) => {
-  res.json(returnData());
+  fs.readFile(jsonRoute, "utf8", (error,data) =>{
+    if (error){
+      return console.log(error);
+    }
+    const parsedData = JSON.parse(data);
+    res.json(parsedData);
+  });
 });
 
-async function returnData(){
-  const notes = await readFileAsync(jsonRoute, "utf8")
+app.post("/api/notes", (req, res) =>{
+  fs.readFile(jsonRoute, "utf8", (error,data) =>{
+    if (error){
+      return console.log(error);
+    }
+    let parsedData = JSON.parse(data);
+    parsedData.push(req.body);
+    let stringedData = JSON.stringify(parsedData)
     
-    let parsedArray = JSON.parse(notes);
-    return(parsedArray);
-};
-
-app.post("/api/notes", async (req, res) => {  
-  let notes = await returnData();
-
-  console.log(req.body);
-  notes.push(req.body);
-  stringedArray = JSON.stringify(notes);
-
-  const post = await writeFileAsync(jsonRoute, stringedArray, "utf8"); 
-  res.json(stringedArray);
-});
-//app.delete
-
+    fs.writeFileSync(jsonRoute, stringedData, (error) => {
+      if (error){
+        return console.log(error)
+      } 
+      res.json(stringedData);
+    }); 
+  });  
+})
 
 //=============================================================
 //Route for JS
