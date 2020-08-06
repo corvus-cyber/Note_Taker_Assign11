@@ -19,7 +19,7 @@ app.use(express.json());
 //Routes
 // =============================================================
 //Route for JSON
-//used a variable to build the route that the JSON will follow
+//used a variableto build the route that the JSON will follow
 const jsonRoute = path.join(__dirname, './db/db.json');
 
 //Used fs to read the file and place app.get within to port the notes into notes.html
@@ -44,13 +44,31 @@ app.post("/api/notes", (req, res) =>{
     
     fs.writeFileSync(jsonRoute, stringedData, (error) => {
       if (error){
-        return console.log(error)
+        return console.log(error);
       } 
       res.json(stringedData);
     }); 
   });  
 })
 
+app.delete("/api/notes/:id", (req, res) => {
+  const uniqueID = req.params.id;
+  console.log(uniqueID);
+  fs.readFile(jsonRoute, "utf8", (error,data) =>{
+    if (error){
+      return console.log(error);
+    };
+    let parsedData = JSON.parse(data);
+    parsedData = parsedData.filter(notes => notes.id !== id);
+    let stringedID=JSON.stringify(idBody);
+    fs.writeFileSync(jsonRoute, stringedID, (error) => {
+      if (error){
+        return console.log(error);
+      }
+      res.json(stringedID);
+    })
+  });
+})
 //=============================================================
 //Route for JS
 app.get('/assets/js/index.js', (req, res) => {
