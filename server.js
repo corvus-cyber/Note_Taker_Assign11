@@ -39,7 +39,13 @@ app.post("/api/notes", (req, res) =>{
       return console.log(error);
     }
     let parsedData = JSON.parse(data);
-    var newID = parsedData[parsedData.length - 1].id +1;
+    if (parsedData > 0){
+      var newID = parsedData[parsedData.length-1].id +1;
+    }
+    else {
+      var newID=1
+    }
+    
     let newNote ={
       id: newID,
       title: req.body.title,
