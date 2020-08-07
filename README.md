@@ -38,6 +38,7 @@ I built this project in order to test my knowledge in express.
 The html, css and javascript were provided as a boiler plate. One of the short comings of this boiler plate was that in order for the user to see their saved or deleted content, they could manually have to reload the page. If I was to improve upon this website I would change the index.js so that it would accept location.reload() so that it would automatically refresh the page upon the user pressing either save or delete. 
 
 # Link:
+[Deployed website](https://uounotetakerassign11.herokuapp.com/notes)
 
 # Screenshot: 
 ![Screenshot of the webpage](./screenshot/interface.png)
